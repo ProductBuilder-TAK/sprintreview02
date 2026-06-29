@@ -13,6 +13,8 @@ import { ChartCard } from '@/components/charts/ChartCard'
 import { ThroughputChart } from '@/components/charts/ThroughputChart'
 import { CycleTimeChart } from '@/components/charts/CycleTimeChart'
 import { TimeInStatusChart, StatusLegend } from '@/components/charts/TimeInStatusChart'
+import { BugsChart } from '@/components/charts/BugsChart'
+import { WipChart } from '@/components/charts/WipChart'
 import { ExportMenu } from '@/components/ExportMenu'
 
 // @ts-expect-error — JS service
@@ -223,22 +225,41 @@ export function ReviewPage() {
             </ChartCard>
           )}
 
-          {/* Time in Status */}
-          {timeInStatus && (
+          {/* Time in Status — data shape: { labels, values2w, pct2w, values12w, pct12w } */}
+          {timeInStatus && timeInStatus.labels && (
             <ChartCard
               title="Répartition du cycle"
               subtitle="Sprint courant vs 6 sprints"
-              legend={timeInStatus.sprintData && <StatusLegend items={timeInStatus.sprintData} />}
+              legend={
+                <StatusLegend items={
+                  (timeInStatus.labels as string[]).map((name: string, i: number) => ({
+                    name,
+                    value: timeInStatus.pct12w?.[i] || 0,
+                  }))
+                } />
+              }
             >
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                <TimeInStatusChart data={timeInStatus.sprintData || []} title="Sprint" />
-                <TimeInStatusChart data={timeInStatus.periodData || []} title="6 sprints" />
+                <TimeInStatusChart
+                  data={(timeInStatus.labels as string[]).map((name: string, i: number) => ({
+                    name,
+                    value: timeInStatus.values2w?.[i] || 0,
+                  }))}
+                  title="Sprint"
+                />
+                <TimeInStatusChart
+                  data={(timeInStatus.labels as string[]).map((name: string, i: number) => ({
+                    name,
+                    value: timeInStatus.values12w?.[i] || 0,
+                  }))}
+                  title="6 sprints"
+                />
               </div>
             </ChartCard>
           )}
 
-          {/* Bugs */}
-          {bugs && throughput && (
+          {/* Bugs — créés vs résolus (Recharts BarChart) */}
+          {bugs && (
             <ChartCard
               title="Bugs — créés vs résolus"
               subtitle="Solde net du stock par sprint"
@@ -249,10 +270,33 @@ export function ReviewPage() {
                 </div>
               }
             >
-              <div className="cell__chart" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span className="dek">Graphique bugs — Sprint 3</span>
-              </div>
+              <BugsChart
+                labels={bugs.weeks || throughput?.weeks || []}
+                created={bugs.created || []}
+                closed={bugs.closed || []}
+              />
             </ChartCard>
+          )}
+
+          {/* WIP individuel moyen (full width) */}
+          {wip && (
+            <div className="grid-cell grid-cell--span2">
+              <div className="cell__head">
+                <div className="cell__title">
+                  <h3 className="h-card">WIP individuel moyen</h3>
+                  <span className="dek">
+                    {wip.currentContributors ? `1 membre a en moyenne ${formatNumber(wip.currentWip, 1)} tickets entre In Progress et Terminé` : 'Données WIP'}
+                  </span>
+                </div>
+              </div>
+              <div className="cell__chart">
+                <WipChart
+                  labels={wip.sprints || []}
+                  values={wip.values || []}
+                  avgWip={wip.avgWip}
+                />
+              </div>
+            </div>
           )}
         </div>
       </div>
