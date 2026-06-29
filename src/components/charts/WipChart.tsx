@@ -35,7 +35,7 @@ export function WipChart({ labels, values, avgWip }: WipChartProps) {
             borderRadius: 6,
             fontSize: 12,
           }}
-          formatter={(value: number) => [`${value.toFixed(1)}`, 'WIP moyen']}
+          formatter={(value) => [`${Number(value).toFixed(1)}`, 'WIP moyen']}
         />
         {avgWip && (
           <ReferenceLine

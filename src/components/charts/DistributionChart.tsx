@@ -40,7 +40,7 @@ export function DistributionChart({ labels, data, percentiles }: DistributionCha
             borderRadius: 6,
             fontSize: 12,
           }}
-          formatter={(value: number) => [`${value.toFixed(1)}%`]}
+          formatter={(value) => [`${Number(value).toFixed(1)}%`]}
         />
         <ReferenceLine x={percentiles.p15} stroke={CHART_COLORS.rust} strokeWidth={2} label={{ value: 'P15', position: 'top', fontSize: 10, fill: CHART_COLORS.rust }} />
         <ReferenceLine x={percentiles.p50} stroke={CHART_COLORS.ink} strokeWidth={2} label={{ value: 'P50', position: 'top', fontSize: 10, fill: CHART_COLORS.ink }} />

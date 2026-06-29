@@ -39,7 +39,7 @@ export function CycleTimeChart({ labels, avgValues, medianValues, benchmarkAvg, 
             borderRadius: 6,
             fontSize: 12,
           }}
-          formatter={(value: number) => [`${value.toFixed(1)}j`]}
+          formatter={(value) => [`${Number(value).toFixed(1)}j`]}
         />
         {benchmarkAvg && (
           <ReferenceLine y={benchmarkAvg} stroke={CHART_COLORS.amber} strokeDasharray="4 4" />

@@ -45,7 +45,7 @@ export function useExport() {
         }
       }
 
-      const filename = `sprint-review${selectedSprint ? '-' + selectedSprint.replace(/\s+/g, '-').toLowerCase() : ''}.pdf`
+      const filename = `sprint-review${selectedSprint ? '-' + String(selectedSprint).replace(/\s+/g, '-').toLowerCase() : ''}.pdf`
       pdf.save(filename)
       toast.success('PDF exporté')
     } catch (err) {
@@ -110,7 +110,7 @@ export function useExport() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `sprint-review${selectedSprint ? '-' + selectedSprint.replace(/\s+/g, '-').toLowerCase() : ''}.md`
+    a.download = `sprint-review${selectedSprint ? '-' + String(selectedSprint).replace(/\s+/g, '-').toLowerCase() : ''}.md`
     a.click()
     URL.revokeObjectURL(url)
     toast.success('Markdown exporté')

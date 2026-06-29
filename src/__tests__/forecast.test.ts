@@ -18,7 +18,7 @@ describe('monteCarloService', () => {
     // Get sprint numbers from tickets
     const sprintNums = [...new Set(
       tickets.filter((t: any) => t.isFinished && t.sprint).map((t: any) => t.sprint)
-    )].sort((a: number, b: number) => a - b).slice(-6) as number[]
+    )].sort((a, b) => (a as number) - (b as number)).slice(-6) as number[]
 
     if (sprintNums.length < 2) return // Skip if not enough data
 
@@ -33,7 +33,7 @@ describe('monteCarloService', () => {
     const tickets = parsed.tickets
     const sprintNums = [...new Set(
       tickets.filter((t: any) => t.isFinished && t.sprint).map((t: any) => t.sprint)
-    )].sort((a: number, b: number) => a - b).slice(-6) as number[]
+    )].sort((a, b) => (a as number) - (b as number)).slice(-6) as number[]
 
     if (sprintNums.length < 2) return
 
@@ -48,7 +48,7 @@ describe('monteCarloService', () => {
     const tickets = parsed.tickets
     const sprintNums = [...new Set(
       tickets.filter((t: any) => t.isFinished && t.sprint).map((t: any) => t.sprint)
-    )].sort((a: number, b: number) => a - b).slice(-6) as number[]
+    )].sort((a, b) => (a as number) - (b as number)).slice(-6) as number[]
 
     if (sprintNums.length < 2) return
 

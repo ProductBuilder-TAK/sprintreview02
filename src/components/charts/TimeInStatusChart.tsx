@@ -43,7 +43,7 @@ export function TimeInStatusChart({ data, title }: TimeInStatusChartProps) {
             ))}
           </Pie>
           <Tooltip
-            formatter={(value: number, name: string) => [`${value.toFixed(1)}j`, name]}
+            formatter={(value, name) => [`${Number(value).toFixed(1)}j`, name]}
             contentStyle={{
               background: CHART_COLORS.paper,
               border: `1px solid ${CHART_COLORS.line}`,
