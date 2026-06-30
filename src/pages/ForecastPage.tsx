@@ -13,6 +13,7 @@ export function ForecastPage() {
   const csvLoaded = useAppStore((s) => s.csvLoaded)
   const csvData = useAppStore((s) => s.csvData)
   const selectedSprint = useAppStore((s) => s.selectedSprint)
+  const selectedTeams = useAppStore((s) => s.selectedTeams)
 
   const [metricType, setMetricType] = useState<'throughput' | 'storyPoints'>('throughput')
 
@@ -21,7 +22,12 @@ export function ForecastPage() {
     if (!csvLoaded || !csvData?.tickets) return null
 
     try {
-      const tickets = csvData.tickets as unknown[]
+      // Filtrer par équipe(s) sélectionnée(s) en Review, comme le vanilla
+      // (qui réinjecte un csvData filtré). Sans sélection → toutes les équipes.
+      let tickets = csvData.tickets as { team?: string }[]
+      if (selectedTeams.length > 0) {
+        tickets = tickets.filter((t) => selectedTeams.includes(t.team ?? ''))
+      }
       const reviewSprintNum = selectedSprint
 
       return forecastService.prepareForecastData(tickets, {
@@ -31,7 +37,7 @@ export function ForecastPage() {
       console.error('[ForecastPage] Error:', err)
       return null
     }
-  }, [csvLoaded, csvData, selectedSprint])
+  }, [csvLoaded, csvData, selectedSprint, selectedTeams])
 
   if (!csvLoaded) {
     return (

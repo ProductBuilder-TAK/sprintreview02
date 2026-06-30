@@ -10,12 +10,17 @@ import { aggregateBySprint } from '@/services/csvParserV2.js'
 export function SharedContributorsPage() {
   const csvData = useAppStore((s) => s.csvData)
   const csvLoaded = useAppStore((s) => s.csvLoaded)
+  const selectedTeams = useAppStore((s) => s.selectedTeams)
 
   const contributors = useMemo(() => {
     if (!csvLoaded || !csvData?.tickets) return null
 
     try {
-      const tickets = csvData.tickets as any[]
+      // Filtrer par équipe(s) sélectionnée(s), comme le vanilla
+      let tickets = csvData.tickets as any[]
+      if (selectedTeams.length > 0) {
+        tickets = tickets.filter((t: any) => selectedTeams.includes(t.team))
+      }
       const sprintData = aggregateBySprint(tickets)
       const sprintNums = sprintData.map((s: any) => s.sprint).slice(-6)
 
@@ -28,7 +33,7 @@ export function SharedContributorsPage() {
     } catch {
       return null
     }
-  }, [csvLoaded, csvData])
+  }, [csvLoaded, csvData, selectedTeams])
 
   if (!csvLoaded) {
     return (
