@@ -22,6 +22,14 @@ export function ForecastPage() {
   const unlockedSecrets = useAppStore((s) => s.unlockedSecrets)
 
   const [metricType, setMetricType] = useState<'throughput' | 'storyPoints'>('throughput')
+  const [excludedContributors, setExcludedContributors] = useState<string[]>([])
+
+  const toggleAbsence = (name: string) => {
+    setExcludedContributors((prev) =>
+      prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]
+    )
+  }
+  const clearAbsences = () => setExcludedContributors([])
 
   // Compute forecast data
   const forecastData = useMemo(() => {
@@ -38,12 +46,13 @@ export function ForecastPage() {
 
       return forecastService.prepareForecastData(tickets, {
         reviewSprint: reviewSprintNum,
+        excludedContributors,
       })
     } catch (err) {
       console.error('[ForecastPage] Error:', err)
       return null
     }
-  }, [csvLoaded, csvData, selectedSprint, selectedTeams])
+  }, [csvLoaded, csvData, selectedSprint, selectedTeams, excludedContributors])
 
   if (!csvLoaded) {
     return (
@@ -201,6 +210,39 @@ export function ForecastPage() {
         </div>
       </div>
 
+      {/* Absences — section secrète (Konami: → → ← ←) */}
+      {showIndividual && contributors && contributors.length > 0 && (
+        <div className="section--editorial">
+          <div className="section__head">
+            <div className="section__title">
+              <span className="section__num">§ 03 — Absences</span>
+              <h2 className="h-section">Simuler des absences</h2>
+            </div>
+            <span className="dek section__deck">Cochez les contributeurs absents pour recalculer.</span>
+          </div>
+          <div className="absence-selector">
+            <div className="absence-selector__list">
+              {contributors.map((c: any) => (
+                <label className="absence-selector__item" key={c.name}>
+                  <input
+                    type="checkbox"
+                    checked={excludedContributors.includes(c.name)}
+                    onChange={() => toggleAbsence(c.name)}
+                  />
+                  <span>{c.name}</span>
+                </label>
+              ))}
+            </div>
+            {excludedContributors.length > 0 && (
+              <div className="absence-selector__summary">
+                <strong>{excludedContributors.length}</strong> contributeur(s) exclu(s)
+                <button className="btn btn--link" onClick={clearAbsences}>Réinitialiser</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Contributors table — section secrète (Konami: → → ← ←) */}
       {showIndividual && contributors && contributors.length > 0 && (
         <div className="section--editorial">
@@ -239,7 +281,7 @@ export function ForecastPage() {
               </thead>
               <tbody>
                 {contributors.map((c: any, idx: number) => (
-                  <tr key={c.name}>
+                  <tr key={c.name} className={excludedContributors.includes(c.name) ? 'excluded' : ''}>
                     <td className="contributor-cell">
                       <span className="contributor-color" style={{ backgroundColor: CONTRIBUTOR_COLORS[idx % CONTRIBUTOR_COLORS.length] }} />
                       <span className="contributor-name">{c.name}</span>
