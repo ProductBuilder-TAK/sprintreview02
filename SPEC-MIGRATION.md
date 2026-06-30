@@ -271,7 +271,7 @@ ReviewPage / ForecastPage (reactent via useAppStore)
 | # | Tâche | Critère de succès |
 |---|---|---|
 | 3.1 | ReviewPage cover (h-display = teamName, cover__sprintno = N°{num}, export dropdown) | Identique |
-| 3.2 | §01 Story Points (SP block avec hero, barre, completion cards, rows) | Identique |
+| 3.2 | §01 Story Points (SP block avec hero, barre, score de complétion global, rows) | Identique |
 | 3.3 | §02 KPI Grid 3×2 (Throughput, Cycle Time, Stock Bugs, Mid-Sprint, MTTR, CFR) | Identique, bonnes valeurs |
 | 3.4 | §03 Charts — Throughput (Recharts BarChart + toggle Tickets/SP) | Visuellement proche |
 | 3.5 | §03 Charts — Cycle Time (Recharts LineChart) | Visuellement proche |

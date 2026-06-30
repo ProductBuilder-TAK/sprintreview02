@@ -1417,42 +1417,6 @@
 }
 
 /* ========================================================================
- * 14b. STORY POINTS COMPLETION CARDS
- * ======================================================================== */
-
-.sp__completion-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.kpi.kpi--completion {
-  min-height: auto;
-  padding: calc(16px * var(--density)) calc(20px * var(--density));
-  gap: 6px;
-  border: none;
-}
-
-.kpi--completion .kpi__num {
-  font-size: clamp(36px, 4vw, 48px);
-}
-
-.kpi--completion .kpi__foot {
-  border-top: none;
-  padding-top: 0;
-}
-
-@media (max-width: 576px) {
-  .sp__completion-cards {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ========================================================================
  * 15. VELOCITY RECOMMENDATION CARD
  * ======================================================================== */
 

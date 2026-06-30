@@ -87,7 +87,7 @@ Actions : dropdown export (PDF Radial, PDF Classique, Markdown)
 ```
 
 ### § 01 — Story points / Engagement et livraison
-- Bloc SP (.sp) avec hero, barre, completion cards (engagement initial + complétion totale), rows (moyenne, vélocité recommandée)
+- Bloc SP (.sp) avec hero, barre, score de complétion global, rows (moyenne, vélocité recommandée)
 
 ### § 02 — Indicateurs / Six chiffres pour résumer le sprint
 - deck : "Comparé à la médiane des six derniers sprints."

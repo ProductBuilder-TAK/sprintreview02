@@ -63,40 +63,31 @@ describe('MidSprintKpi', () => {
 })
 
 describe('SpCompletionBlock', () => {
-  it('renders delivered and committed', () => {
+  it('renders delivered, committed and global completion', () => {
     render(
       <SpCompletionBlock
         currentDelivered={38}
         currentCommitted={45}
         currentCompletion={84}
         currentSprintLabel="Sprint 18"
-        initialCommitted={37}
-        initialDelivered={35}
-        initialCompletion={95}
-        midSprintSP={8}
       />
     )
     expect(screen.getByText('38')).toBeDefined()
     expect(screen.getByText(/45 engagés/)).toBeDefined()
-    expect(screen.getByText('95')).toBeDefined()
-    expect(screen.getByText('84')).toBeDefined()
-    expect(screen.getByText(/Hors 8 sp ajoutés/)).toBeDefined()
+    expect(screen.getByText('84%')).toBeDefined()
+    expect(screen.getByText('Complétion')).toBeDefined()
   })
 
-  it('shows scope preserved when no mid-sprint', () => {
+  it('shows the current sprint label', () => {
     render(
       <SpCompletionBlock
         currentDelivered={42}
         currentCommitted={45}
         currentCompletion={93}
         currentSprintLabel="Sprint 17"
-        initialCommitted={45}
-        initialDelivered={42}
-        initialCompletion={93}
-        midSprintSP={0}
       />
     )
-    expect(screen.getByText('Scope préservé')).toBeDefined()
+    expect(screen.getByText('Sprint 17')).toBeDefined()
   })
 })
 

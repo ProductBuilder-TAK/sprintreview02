@@ -88,9 +88,6 @@ export function useExport() {
     if (storyPoints) {
       lines.push('## Story Points')
       lines.push(`- **${storyPoints.currentDelivered}** livrés / ${storyPoints.currentCommitted} engagés (${storyPoints.currentCompletion}%)`)
-      if (storyPoints.initialCompletion != null) {
-        lines.push(`- Engagement initial : ${storyPoints.initialCompletion}%`)
-      }
       lines.push('')
     }
 

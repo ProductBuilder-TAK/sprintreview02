@@ -40,7 +40,7 @@ export const GenericKpiCard: StoryObj = {
 }
 
 export const StoryPointsBlock: StoryObj = {
-  name: 'Story Points (avec Completion Cards)',
+  name: 'Story Points',
   render: () => (
     <div style={{ maxWidth: 500 }}>
       <SpCompletionBlock
@@ -48,32 +48,10 @@ export const StoryPointsBlock: StoryObj = {
         currentCommitted={45}
         currentCompletion={84}
         currentSprintLabel="Sprint 18"
-        initialCommitted={37}
-        initialDelivered={35}
-        initialCompletion={95}
-        midSprintSP={8}
         avgDelivered={34.2}
         avgCompletion={88}
         previousSprintsCount={5}
         recommendedVelocity={36}
-      />
-    </div>
-  ),
-}
-
-export const StoryPointsNoMidSprint: StoryObj = {
-  name: 'Story Points (scope préservé)',
-  render: () => (
-    <div style={{ maxWidth: 500 }}>
-      <SpCompletionBlock
-        currentDelivered={42}
-        currentCommitted={45}
-        currentCompletion={93}
-        currentSprintLabel="Sprint 17"
-        initialCommitted={45}
-        initialDelivered={42}
-        initialCompletion={93}
-        midSprintSP={0}
       />
     </div>
   ),

@@ -6,10 +6,6 @@ interface SpCompletionBlockProps {
   currentCommitted: number
   currentCompletion: number
   currentSprintLabel: string
-  initialCommitted: number
-  initialDelivered: number
-  initialCompletion: number
-  midSprintSP: number
   avgDelivered?: number
   avgCompletion?: number
   previousSprintsCount?: number
@@ -31,18 +27,12 @@ export function SpCompletionBlock({
   currentCommitted,
   currentCompletion,
   currentSprintLabel,
-  initialCommitted,
-  initialDelivered,
-  initialCompletion,
-  midSprintSP,
   avgDelivered,
   avgCompletion,
   previousSprintsCount,
   recommendedVelocity,
 }: SpCompletionBlockProps) {
-  const initialClass = getCompletionClass(initialCompletion)
   const totalClass = getCompletionClass(currentCompletion)
-  const hasMidSprint = midSprintSP > 0
 
   return (
     <div className="sp" style={{ border: '1px solid var(--color-line)' }}>
@@ -58,27 +48,14 @@ export function SpCompletionBlock({
         <div className="sp__bar-fill" style={{ width: `${currentCompletion}%` }} />
       </div>
 
-      <div className="sp__completion-cards">
-        <div className="kpi kpi--completion">
-          <div className="kpi__label">Engagement initial</div>
-          <div className="kpi__num"><span className="tnum">{initialCompletion}</span><em>%</em></div>
-          <div className="kpi__hint">{initialDelivered} / {initialCommitted} sp</div>
-          <div className="kpi__foot">
-            <span className={`pill pill--${pillClass(initialClass)}`} style={{ fontSize: 10, padding: '2px 8px' }}>
-              {hasMidSprint ? `Hors ${midSprintSP} sp ajoutés` : 'Scope préservé'}
-            </span>
-          </div>
-        </div>
-        <div className="kpi kpi--completion">
-          <div className="kpi__label">Complétion totale</div>
-          <div className="kpi__num"><span className="tnum">{currentCompletion}</span><em>%</em></div>
-          <div className="kpi__hint">{currentDelivered} / {currentCommitted} sp</div>
-          <div className="kpi__foot">
-            <span className={`pill pill--${pillClass(totalClass)}`} style={{ fontSize: 10, padding: '2px 8px' }}>
-              {currentSprintLabel || 'Sprint actuel'}
-            </span>
-          </div>
-        </div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, padding: '8px 0 4px' }}>
+        <span className="dek">Complétion</span>
+        <span className="tnum" style={{ fontSize: 'clamp(28px, 3.5vw, 38px)', fontWeight: 500, lineHeight: 1 }}>
+          {currentCompletion}%
+        </span>
+        <span className={`pill pill--${pillClass(totalClass)}`} style={{ fontSize: 10, padding: '2px 8px' }}>
+          {currentSprintLabel || 'Sprint actuel'}
+        </span>
       </div>
 
       <div className="sp__rows">

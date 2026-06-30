@@ -99,10 +99,6 @@ export function ReviewPage() {
             currentCommitted={storyPoints.currentCommitted}
             currentCompletion={storyPoints.currentCompletion}
             currentSprintLabel={storyPoints.currentSprintLabel}
-            initialCommitted={storyPoints.initialCommitted ?? storyPoints.currentCommitted}
-            initialDelivered={storyPoints.initialDelivered ?? storyPoints.currentDelivered}
-            initialCompletion={storyPoints.initialCompletion ?? storyPoints.currentCompletion}
-            midSprintSP={storyPoints.midSprintSP ?? 0}
             avgDelivered={storyPoints.avgDelivered}
             avgCompletion={storyPoints.avgCompletion}
             previousSprintsCount={storyPoints.previousSprintsCount}
