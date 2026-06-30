@@ -4,16 +4,22 @@ import { ScenarioCard } from '@/components/ScenarioCard'
 import { ChartCard } from '@/components/charts/ChartCard'
 import { ThroughputChart } from '@/components/charts/ThroughputChart'
 import { DistributionChart } from '@/components/charts/DistributionChart'
-import { Badge } from '@/components/ui/badge'
 
 // @ts-expect-error — JS service
 import forecastService from '@/services/forecastDataService.js'
+
+// Palette des contributeurs (identique au vanilla)
+const CONTRIBUTOR_COLORS = [
+  '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
+  '#EC4899', '#06B6D4', '#F97316', '#84CC16', '#6366F1',
+]
 
 export function ForecastPage() {
   const csvLoaded = useAppStore((s) => s.csvLoaded)
   const csvData = useAppStore((s) => s.csvData)
   const selectedSprint = useAppStore((s) => s.selectedSprint)
   const selectedTeams = useAppStore((s) => s.selectedTeams)
+  const unlockedSecrets = useAppStore((s) => s.unlockedSecrets)
 
   const [metricType, setMetricType] = useState<'throughput' | 'storyPoints'>('throughput')
 
@@ -60,6 +66,8 @@ export function ForecastPage() {
   }
 
   const { simulation, scenarios, charts, teamMetrics, nextSprint, contributors } = forecastData
+  const hasStoryPoints = forecastData.validation?.hasStoryPoints ?? false
+  const showIndividual = unlockedSecrets.has('individual')
   const dist = charts?.distribution?.[metricType]
   const velocityChart = metricType === 'storyPoints' ? charts?.teamStoryPoints : charts?.teamVelocity
 
@@ -193,41 +201,84 @@ export function ForecastPage() {
         </div>
       </div>
 
-      {/* Contributors table */}
-      {contributors && contributors.length > 0 && (
+      {/* Contributors table — section secrète (Konami: → → ← ←) */}
+      {showIndividual && contributors && contributors.length > 0 && (
         <div className="section--editorial">
           <div className="section__head">
             <div className="section__title">
               <span className="section__num">§ 04 — Contributeurs</span>
               <h2 className="h-section">Simulation individuelle</h2>
             </div>
+            {forecastData.sprintNumbers?.length > 0 && (
+              <span className="dek section__deck">
+                Basée sur les Sprints {forecastData.sprintNumbers[0]} → {forecastData.sprintNumbers[forecastData.sprintNumbers.length - 1]}
+              </span>
+            )}
           </div>
-          <div style={{ overflowX: 'auto' }}>
-            <table>
+          <div className="contributors-table-wrapper">
+            <table className="contributors-table contributors-table--scenarios">
               <thead>
                 <tr>
-                  <th>Contributeur</th>
-                  <th>Sprints</th>
-                  <th>Moy. tickets</th>
-                  <th>Moy. SP</th>
-                  <th>Fiabilité</th>
+                  <th rowSpan={2}>Contributeur</th>
+                  <th colSpan={3} className="th-group">Tickets</th>
+                  {hasStoryPoints && <th colSpan={3} className="th-group">Story Points</th>}
+                  <th rowSpan={2}>Fiabilité</th>
+                </tr>
+                <tr>
+                  <th className="th-scenario th-scenario--warning">Pessimiste</th>
+                  <th className="th-scenario th-scenario--primary">Réaliste</th>
+                  <th className="th-scenario th-scenario--success">Optimiste</th>
+                  {hasStoryPoints && (
+                    <>
+                      <th className="th-scenario th-scenario--warning">Pessimiste</th>
+                      <th className="th-scenario th-scenario--primary">Réaliste</th>
+                      <th className="th-scenario th-scenario--success">Optimiste</th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody>
-                {contributors.map((c: any) => (
+                {contributors.map((c: any, idx: number) => (
                   <tr key={c.name}>
-                    <td className="font-medium">{c.name}</td>
-                    <td className="mono">{c.sprintCount}</td>
-                    <td className="mono">{c.throughput?.mean?.toFixed(1) ?? '—'}</td>
-                    <td className="mono">{c.storyPoints?.mean?.toFixed(1) ?? '—'}</td>
-                    <td>
-                      <Badge variant={c.reliability >= 0.8 ? 'default' : 'secondary'}>
-                        {Math.round((c.reliability || 0) * 100)}%
-                      </Badge>
+                    <td className="contributor-cell">
+                      <span className="contributor-color" style={{ backgroundColor: CONTRIBUTOR_COLORS[idx % CONTRIBUTOR_COLORS.length] }} />
+                      <span className="contributor-name">{c.name}</span>
+                      <span className="contributor-sprints">{c.sprintsActive}/{c.sprintsAnalyzed} sprints</span>
+                    </td>
+                    <td className="scenario-cell scenario-cell--warning">{c.throughput.p15}</td>
+                    <td className="scenario-cell scenario-cell--primary"><strong>{c.throughput.p50}</strong></td>
+                    <td className="scenario-cell scenario-cell--success">{c.throughput.p85}</td>
+                    {hasStoryPoints && (
+                      <>
+                        <td className="scenario-cell scenario-cell--warning">{c.storyPoints.p15}</td>
+                        <td className="scenario-cell scenario-cell--primary"><strong>{c.storyPoints.p50}</strong></td>
+                        <td className="scenario-cell scenario-cell--success">{c.storyPoints.p85}</td>
+                      </>
+                    )}
+                    <td className="fiability-cell">
+                      <span className={`badge badge--${c.isReliable ? 'success' : 'warning'}`}>
+                        {c.isReliable ? 'Fiable' : 'Limité'}
+                      </span>
                     </td>
                   </tr>
                 ))}
               </tbody>
+              <tfoot>
+                <tr>
+                  <td><strong>ÉQUIPE</strong></td>
+                  <td className="scenario-cell scenario-cell--warning">{simulation.throughput.p15}</td>
+                  <td className="scenario-cell scenario-cell--primary"><strong>{simulation.throughput.p50}</strong></td>
+                  <td className="scenario-cell scenario-cell--success">{simulation.throughput.p85}</td>
+                  {hasStoryPoints && (
+                    <>
+                      <td className="scenario-cell scenario-cell--warning">{simulation.storyPoints.p15}</td>
+                      <td className="scenario-cell scenario-cell--primary"><strong>{simulation.storyPoints.p50}</strong></td>
+                      <td className="scenario-cell scenario-cell--success">{simulation.storyPoints.p85}</td>
+                    </>
+                  )}
+                  <td>-</td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>

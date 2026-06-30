@@ -10,6 +10,7 @@ const SECRET_CODES: SecretCode[] = [
   { name: 'starac', sequence: ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown'], message: 'StarAc débloqué !' },
   { name: 'howmany', sequence: ['ArrowLeft', 'ArrowLeft', 'ArrowRight', 'ArrowRight'], message: 'How Many débloqué !' },
   { name: 'hide-secrets', sequence: ['ArrowDown', 'ArrowDown', 'ArrowUp', 'ArrowUp'], message: 'Onglets secrets masqués' },
+  { name: 'individual', sequence: ['ArrowRight', 'ArrowRight', 'ArrowLeft', 'ArrowLeft'], message: 'Simulation individuelle débloquée !' },
   { name: 'pearson', sequence: ['p', 'e', 'a', 'r'], message: 'Corrélation Pearson débloquée !' },
   { name: 'burndown', sequence: ['b', 'u', 'r', 'n'], message: 'Burndown Chart débloqué !' },
 ]

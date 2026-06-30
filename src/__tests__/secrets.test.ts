@@ -64,11 +64,12 @@ describe('useSecretCode', () => {
   })
 
   it('has all expected secret codes', () => {
-    expect(SECRET_CODES).toHaveLength(5)
+    expect(SECRET_CODES).toHaveLength(6)
     const names = SECRET_CODES.map((c) => c.name)
     expect(names).toContain('starac')
     expect(names).toContain('howmany')
     expect(names).toContain('hide-secrets')
+    expect(names).toContain('individual')
     expect(names).toContain('pearson')
     expect(names).toContain('burndown')
   })
