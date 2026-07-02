@@ -72,7 +72,7 @@ const statusMeta: Record<ItemStatus, { label: string; className: string }> = {
 };
 
 export const Route = createFileRoute("/reviews/$reviewId")({
-  head: ({ loaderData }) => ({
+  head: ({ loaderData }: { loaderData?: { review: Review | null } }) => ({
     meta: [
       {
         title: loaderData?.review?.title

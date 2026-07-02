@@ -27,7 +27,7 @@ type ReviewRow = {
   item_count: number;
 };
 
-export const Route = createFileRoute("/reviews")({
+export const Route = createFileRoute("/reviews/")({
   head: () => ({
     meta: [
       { title: "Reviews — Sprint Review" },
@@ -55,8 +55,9 @@ async function fetchReviews(): Promise<ReviewRow[]> {
     team: r.team,
     review_date: r.review_date,
     created_at: r.created_at,
-    // @ts-expect-error supabase count aggregate
-    item_count: r.review_items?.[0]?.count ?? 0,
+    item_count:
+      (r as unknown as { review_items?: Array<{ count: number }> })
+        .review_items?.[0]?.count ?? 0,
   }));
 }
 
