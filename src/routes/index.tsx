@@ -1,24 +1,45 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Sprint Review — journal your sprint reviews" },
+      {
+        name: "description",
+        content:
+          "A lightweight tool to prepare, run, and keep track of your team's sprint reviews: demos, feedback, decisions.",
+      },
+      { property: "og:title", content: "Sprint Review" },
+      {
+        property: "og:description",
+        content: "Prepare, run, and journal your sprint reviews.",
+      },
+    ],
+  }),
+  component: Home,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Home() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="flex min-h-screen items-center justify-center bg-background px-6">
+      <div className="max-w-xl text-center">
+        <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
+          Sprint Review
+        </p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+          Journal every sprint review, without the mess.
+        </h1>
+        <p className="mt-4 text-base text-muted-foreground">
+          Capture demos, feedback, and decisions in one place. Look back on any
+          past sprint in seconds.
+        </p>
+        <div className="mt-8">
+          <Button asChild size="lg">
+            <Link to="/reviews">Open reviews</Link>
+          </Button>
+        </div>
+      </div>
+    </main>
   );
 }
