@@ -77,14 +77,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Sprint Review — journal your sprint reviews" },
+      {
+        name: "description",
+        content:
+          "A lightweight tool to prepare, run, and keep track of your team's sprint reviews.",
+      },
+      { name: "author", content: "Sprint Review" },
+      { property: "og:title", content: "Sprint Review" },
+      {
+        property: "og:description",
+        content: "Prepare, run, and journal your sprint reviews.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
