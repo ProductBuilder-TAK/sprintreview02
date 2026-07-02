@@ -14,7 +14,132 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      review_decisions: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          review_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          review_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          review_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_decisions_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      review_feedbacks: {
+        Row: {
+          author: string
+          body: string
+          created_at: string
+          id: string
+          item_id: string
+        }
+        Insert: {
+          author: string
+          body: string
+          created_at?: string
+          id?: string
+          item_id: string
+        }
+        Update: {
+          author?: string
+          body?: string
+          created_at?: string
+          id?: string
+          item_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_feedbacks_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "review_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      review_items: {
+        Row: {
+          author: string
+          created_at: string
+          description: string | null
+          id: string
+          review_id: string
+          status: Database["public"]["Enums"]["review_item_status"]
+          title: string
+        }
+        Insert: {
+          author: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          review_id: string
+          status?: Database["public"]["Enums"]["review_item_status"]
+          title: string
+        }
+        Update: {
+          author?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          review_id?: string
+          status?: Database["public"]["Enums"]["review_item_status"]
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_items_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviews: {
+        Row: {
+          created_at: string
+          id: string
+          review_date: string
+          sprint_label: string
+          team: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          review_date?: string
+          sprint_label: string
+          team?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          review_date?: string
+          sprint_label?: string
+          team?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +148,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      review_item_status: "done" | "partial" | "blocked"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +275,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      review_item_status: ["done", "partial", "blocked"],
+    },
   },
 } as const
