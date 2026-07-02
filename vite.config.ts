@@ -5,7 +5,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/sprint-review/',
+  base: '/sprintreview02/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
